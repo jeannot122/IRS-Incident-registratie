@@ -33,17 +33,19 @@ namespace IRS.API.Services
 
             if (string.IsNullOrEmpty(anUserName) || string.IsNullOrEmpty(aPassword))
             {
-                lAccount = null;
+                lAuthorized = false;
             }
-
-            // Gets the username and if no username is found lAccount is null.
-            lAccount = mContext.Accounts.SingleOrDefault(x => x.UserName == anUserName);
-
-            if (lAccount.Password == aPassword)
+            else
             {
-                lAuthorized = true;
-            }
+                // Gets the username and if no username is found lAccount is null.
+                lAccount = mContext.Accounts.SingleOrDefault(x => x.UserName == anUserName);
 
+                if (lAccount != null && lAccount.Password == aPassword)
+                {
+                    lAuthorized = true;
+                }
+            }
+            
             return lAuthorized;
         }
 
