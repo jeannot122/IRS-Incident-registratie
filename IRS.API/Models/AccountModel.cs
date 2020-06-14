@@ -26,6 +26,16 @@ namespace IRS.API.Models
         public string Password { get; set; }
 
         /// <summary>
+        /// The hash for password encryption.
+        /// </summary>
+        public string PasswordHash { get; set; }
+
+        /// <summary>
+        /// The salt for password encryption.
+        /// </summary>
+        public string PasswordSalt { get; set; }
+
+        /// <summary>
         /// The user full name.
         /// </summary>
         public string UserFullName { get; set; }
