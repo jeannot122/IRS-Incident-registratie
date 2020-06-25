@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IRS.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20200526155731_V2")]
-    partial class V2
+    [Migration("20200625122152_V3")]
+    partial class V3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,6 +26,12 @@ namespace IRS.API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordSalt")
                         .HasColumnType("text");
 
                     b.Property<string>("TypeId")
@@ -81,6 +87,9 @@ namespace IRS.API.Migrations
 
                     b.Property<int>("Number")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeId")
                         .HasColumnType("text");

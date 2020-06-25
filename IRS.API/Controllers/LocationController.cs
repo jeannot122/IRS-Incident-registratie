@@ -4,33 +4,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using IRS.API.Data;
 using IRS.API.Models;
-using IRS.APP.Areas.Customer.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace IRS.API.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class CustomerController : ControllerBase
+    [ApiController]
+    public class LocationController : ControllerBase
     {
-        private readonly ILogger<CustomerController> _logger;
+        private readonly ILogger<LocationController> _logger;
 
-        public CustomerController(ILogger<CustomerController> logger)
+        public LocationController(ILogger<LocationController> logger)
         {
             _logger = logger;
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create([FromBody] CustomerModel aCustomer)
+        public async Task<IActionResult> Create([FromBody] LocationModel aLocation)
         {
-            ObjectResult lResult = null; 
+            ObjectResult lResult = null;
             try
             {
                 DatabaseContext lContext = new DatabaseContext();
                 if (ModelState.IsValid)
                 {
-                    await lContext.Customers.AddAsync(aCustomer);
+                    await lContext.Locations.AddAsync(aLocation);
                     await lContext.SaveChangesAsync();
 
                     lResult = new ObjectResult("Created");
@@ -46,7 +46,7 @@ namespace IRS.API.Controllers
         }
 
         [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] CustomerModel aCustomer, int anId)
+        public async Task<IActionResult> Update([FromBody] LocationModel aLocation, int anId)
         {
             ObjectResult lResult = null;
             try
@@ -54,13 +54,14 @@ namespace IRS.API.Controllers
                 DatabaseContext lContext = new DatabaseContext();
                 if (ModelState.IsValid)
                 {
-                    var lCustomerToUpdate = lContext.Customers.Where(x => x.Id == anId).SingleOrDefault();
-                    lCustomerToUpdate.LocationName = aCustomer.LocationName;
-                    lCustomerToUpdate.LocationType = aCustomer.LocationType;
-                    lCustomerToUpdate.BusinessEmailAddress = aCustomer.BusinessEmailAddress;
-                    lCustomerToUpdate.Name = aCustomer.Name;
-                    
-                    lContext.Customers.Update(lCustomerToUpdate);
+                    var lLocationToUpdate = lContext.Locations.Where(x => x.Id == anId).SingleOrDefault();
+                    lLocationToUpdate.Street = aLocation.Street;
+                    lLocationToUpdate.Number = aLocation.Number;
+                    lLocationToUpdate.Addition = aLocation.Addition;
+                    lLocationToUpdate.ZipCode = aLocation.ZipCode;
+                    lLocationToUpdate.TypeId = aLocation.TypeId;
+
+                    lContext.Locations.Update(lLocationToUpdate);
                     await lContext.SaveChangesAsync();
 
                     lResult = new ObjectResult("Updated");
@@ -84,8 +85,8 @@ namespace IRS.API.Controllers
                 DatabaseContext lContext = new DatabaseContext();
                 if (ModelState.IsValid)
                 {
-                    var CustomerToDelete = lContext.Customers.Where(x => x.Id == anId).SingleOrDefault();
-                    lContext.Customers.Remove(CustomerToDelete);
+                    var lLocationToRemove = lContext.Locations.Where(x => x.Id == anId).SingleOrDefault();
+                    lContext.Locations.Remove(lLocationToRemove);
                     await lContext.SaveChangesAsync();
 
                     lResult = new ObjectResult("Removed");

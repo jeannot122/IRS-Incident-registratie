@@ -22,6 +22,52 @@ namespace IRS.API.Controllers
             _logger = logger;
         }
 
+        [HttpGet("GetById")]
+        public AccountModel GetAll(int anId)
+        {
+            AccountModel lAccount = null;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    DatabaseContext lContext = new DatabaseContext();
+                    AccountService lService = new AccountService(lContext);
+                    lAccount = lService.GetById(anId);
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Cannot save changes, try again.");
+                _logger.LogError("Failed to get account.");
+            }
+
+            return lAccount;
+        }
+
+        [HttpGet("GetAll")]
+        public IEnumerable<AccountModel> GetAll()
+        {
+            IEnumerable<AccountModel> lAccounts = null;
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    DatabaseContext lContext = new DatabaseContext();
+                    AccountService lService = new AccountService(lContext);
+                    lAccounts = lService.GetAll();
+                }
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Cannot save changes, try again.");
+                _logger.LogError("Failed to get all Accounts.");
+            }
+
+            return lAccounts;
+        }
+
         [HttpPost("Authenticate")]
         public async Task<IActionResult> Authenticate([FromBody]AccountModel anAccount)
         {
@@ -29,12 +75,13 @@ namespace IRS.API.Controllers
 
             try
             {
-                if (ModelState.IsValid) {
+                if (ModelState.IsValid) 
+                {
                     DatabaseContext lContext = new DatabaseContext();
                     AccountService lService = new AccountService(lContext);
-                    bool lAuthenticated = lService.Authenticate(anAccount.UserName, anAccount.Password);
+                    ObjectResult lAuthenticated = await lService.Authenticate(anAccount.UserName, anAccount.Password);
 
-                    if (lAuthenticated)
+                    if (lAuthenticated.Value.ToString() == "Ok")
                     {
                         lResult = new ObjectResult("Authenticated");
                     }
@@ -65,8 +112,8 @@ namespace IRS.API.Controllers
                 DatabaseContext lContext = new DatabaseContext();
                 if (ModelState.IsValid)
                 {
-                    lContext.Accounts.Add(anAccount);
-                    lContext.SaveChanges();
+                    await lContext.Accounts.AddAsync(anAccount);
+                    await lContext.SaveChangesAsync();
 
                     lResult = new ObjectResult("Created");
                 }
@@ -95,10 +142,10 @@ namespace IRS.API.Controllers
                     lAccountToUpdate.Password = anAccount.Password;
                     lAccountToUpdate.TypeId = anAccount.TypeId;
 
-                    lContext.Accounts.Add(lAccountToUpdate);
-                    lContext.SaveChanges();
+                    lContext.Accounts.Update(lAccountToUpdate);
+                    await lContext.SaveChangesAsync();
 
-                    lResult = new ObjectResult("Created");
+                    lResult = new ObjectResult("Updated");
                 }
             }
             catch
@@ -121,7 +168,7 @@ namespace IRS.API.Controllers
                 {
                     var lAccountToDelete = lContext.Accounts.Where(x => x.Id == Id).SingleOrDefault();
                     lContext.Accounts.Remove(lAccountToDelete);
-                    lContext.SaveChanges();
+                    await lContext.SaveChangesAsync();
 
                     lResult = new ObjectResult("Removed");
                 }

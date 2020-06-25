@@ -8,11 +8,11 @@ namespace IRS.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "TypeId",
+                name: "Type",
                 table: "Incidents");
 
             migrationBuilder.DropColumn(
-                name: "TypeId",
+                name: "Type",
                 table: "Accounts");
 
             migrationBuilder.AlterColumn<string>(
@@ -26,6 +26,16 @@ namespace IRS.API.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "TypeId",
                 table: "Incidents",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PasswordHash",
+                table: "Accounts",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PasswordSalt",
+                table: "Accounts",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
@@ -79,6 +89,14 @@ namespace IRS.API.Migrations
             migrationBuilder.DropColumn(
                 name: "TypeId",
                 table: "Incidents");
+
+            migrationBuilder.DropColumn(
+                name: "PasswordHash",
+                table: "Accounts");
+
+            migrationBuilder.DropColumn(
+                name: "PasswordSalt",
+                table: "Accounts");
 
             migrationBuilder.DropColumn(
                 name: "TypeId",

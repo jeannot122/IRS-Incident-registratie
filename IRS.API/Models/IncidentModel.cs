@@ -31,5 +31,10 @@ namespace IRS.API.Models
         /// The incident type.
         /// </summary>
         public string TypeId { get; set; }
+
+        /// <summary>
+        /// The status of the incident.
+        /// </summary>
+        public string Status { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using IRS.API.Data;
 using IRS.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,31 +10,38 @@ namespace IRS.API.Services
 {
     public interface IAccountService
     {
-        bool Authenticate(string anUserName, string aPassword);
+        Task<ObjectResult> Authenticate(string anUserName, string aPassword);
         IEnumerable<AccountModel> GetAll();
-        AccountModel GetById(int Id);
-        AccountModel Create(AccountModel anAccount, string aPassword);
-        void Update(AccountModel anAccount, string aPassword = null);
-        void Delete(int Id);
+        AccountModel GetById(int anId);
     }
 
     public class AccountService : IAccountService
     {
         private DatabaseContext mContext;
 
+        /// <summary>
+        /// The database context.
+        /// </summary>
+        /// <param name="aContext"></param>
         public AccountService(DatabaseContext aContext)
         {
             mContext = aContext;
         }
 
-        public bool Authenticate(string anUserName, string aPassword)
+        /// <summary>
+        /// Authenticates the username and password.
+        /// </summary>
+        /// <param name="anUserName"></param>
+        /// <param name="aPassword"></param>
+        /// <returns></returns>
+        public async Task<ObjectResult> Authenticate(string anUserName, string aPassword)
         {
             AccountModel lAccount = null;
-            bool lAuthorized = false;
+            ObjectResult lAuthorized = null;
 
             if (string.IsNullOrEmpty(anUserName) || string.IsNullOrEmpty(aPassword))
             {
-                lAuthorized = false;
+                lAuthorized = new ObjectResult("Fail");
             }
             else
             {
@@ -42,36 +50,30 @@ namespace IRS.API.Services
 
                 if (lAccount != null && lAccount.Password == aPassword)
                 {
-                    lAuthorized = true;
+                    lAuthorized = new ObjectResult("Ok");
                 }
             }
             
             return lAuthorized;
         }
 
-        public AccountModel Create(AccountModel anAccount, string aPassword)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Gets all Accounts.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<AccountModel> GetAll()
         {
             return mContext.Accounts;
         }
 
-        public AccountModel GetById(int Id)
+        /// <summary>
+        /// Gets account by Id.
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public AccountModel GetById(int anId)
         {
-            return mContext.Accounts.Find(Id);
-        }
-
-        public void Update(AccountModel anAccount, string aPassword = null)
-        {
-            throw new NotImplementedException();
+            return mContext.Accounts.Find(anId);
         }
     }
 }

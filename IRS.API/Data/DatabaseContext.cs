@@ -5,7 +5,7 @@ namespace IRS.API.Data
 {
     public class DatabaseContext : DbContext
     {
-        private const string ConnectionString = @"server=192.168.178.14;user id=Jeannot;password=Poku4321!;persistsecurityinfo=True;database=irsdb;port=3306";
+        private const string ConnectionString = @"server=192.168.178.14;user id=Jeannot;password=Jeannot150796;persistsecurityinfo=True;database=irsdb;port=3306";
 
         public virtual DbSet<AccountModel> Accounts { get; set; }
         public virtual DbSet<IncidentModel> Incidents { get; set; }
