@@ -115,7 +115,7 @@ namespace IRS.API.Controllers
             return lIncidents;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAllClosed")]
         public IEnumerable<IncidentModel> GetAllClosed()
         {
             IEnumerable<IncidentModel> lIncidents = null;
