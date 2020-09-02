@@ -5,16 +5,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Account\Controllers\" />
+    <Compile Remove="Areas\Authorization\Views\**" />
+    <Content Remove="Areas\Authorization\Views\**" />
+    <EmbeddedResource Remove="Areas\Authorization\Views\**" />
+    <None Remove="Areas\Authorization\Views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Styles\Main_Styles.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\Account\Data\" />
     <Folder Include="Areas\Account\Views\" />
     <Folder Include="Areas\Authorization\Controllers\" />
     <Folder Include="Areas\Authorization\Data\" />
     <Folder Include="Areas\Authorization\Models\" />
-    <Folder Include="Areas\Authorization\Views\" />
     <Folder Include="Areas\Customer\Controllers\Location\" />
     <Folder Include="Areas\Customer\Data\Location\" />
     <Folder Include="Areas\Customer\Views\" />
+    <Folder Include="Styles\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +39,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\main_styles.css">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 

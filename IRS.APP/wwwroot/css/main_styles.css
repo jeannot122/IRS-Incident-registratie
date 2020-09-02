@@ -1,0 +1,10 @@
+﻿body {
+}
+
+#login_UserName
+{
+    padding-top:10px;
+    padding-right:65px;
+    font-weight:bold;
+    width:120px;
+}

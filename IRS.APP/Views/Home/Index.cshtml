@@ -1,8 +1,27 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IRS.APP.Areas.Account.Models.AccountModel
+
+@{
+    ViewData["Title"] = "Login";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welkom</h1>
-    <p><a>IRS (Incident Registratie Systeem) - Het systeem dat doet wat u verwacht.</a>.</p>
+<div class="text-center" style="margin-bottom:60px;">
+    <h1 class="display-4">Inloggen</h1>
 </div>
+
+<div style="text-align:center; padding:20px; border:thin">
+    @using (Html.BeginForm())
+    {
+        <div style="padding-right:60px; padding:10px; font-weight:bold">
+            @Html.LabelFor(m => m.UserName):
+        </div>
+        @Html.TextBoxFor(m => m.UserName)
+
+        <div style="padding-right:85px; padding:10px; font-weight:bold">
+            @Html.LabelFor(m => m.Password):
+        </div>
+        @Html.TextBoxFor(m => m.Password)
+    }
+</div>
+
+
+
